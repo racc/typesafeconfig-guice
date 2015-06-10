@@ -12,7 +12,7 @@ import com.google.inject.BindingAnnotation;
 import com.typesafe.config.Config;
 
 /**
- * A {@link BindingAnnotation} Used to annotate fields, construc
+ * A {@link BindingAnnotation} Used to annotate fields, constructors and provider methods.
  * 
  * @author jason
  */

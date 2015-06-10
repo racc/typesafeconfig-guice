@@ -13,9 +13,20 @@ import org.reflections.util.ConfigurationBuilder;
 import org.reflections.util.FilterBuilder;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
 import com.google.inject.Key;
+import com.google.inject.Module;
 import com.typesafe.config.Config;
+import com.typesafe.config.ConfigBeanFactory;
+import com.typesafe.config.ConfigValue;
+import com.typesafe.config.ConfigValueType;
 
+/**
+ * Include this {@link Module} in your {@link Guice} bootstrapping to Automagically
+ * get bindings to your {@link TypesafeConfig} annotated configuration parameters.
+ * 
+ * @author jason
+ */
 public class TypesafeConfigModule extends AbstractModule {
 
 	private final Config config;
@@ -58,6 +69,16 @@ public class TypesafeConfigModule extends AbstractModule {
 	}
 	
 	private Object getConfigValue(Type type, String path) {
+		ConfigValue configValue = config.getValue(path);
+		if (configValue.valueType().equals(ConfigValueType.OBJECT)) {
+			try {
+				Object bean = ConfigBeanFactory.create(config.getConfig(path), Class.forName(type.getTypeName()));
+				return bean;
+			} catch (ClassNotFoundException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		
 		return config.getAnyRef(path);
 	}
 }
