@@ -13,7 +13,7 @@ Allows Guice to @Inject configuration values into your application derived from 
 
 ### Quickstart
 #### Step 1:
-Annotate configuration points with ```java @TypesafeConfig("config.path.key")```
+Annotate configuration injection points (Constructors, Providers, Fields) with ```@TypesafeConfig("config.path.key")```
 
 #### Step 2:
 Bootstrap your application with Guice and the TypesafeConfigModule.
