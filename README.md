@@ -1,9 +1,8 @@
 # typesafeconfig-guice
-Allows @Inject of configuration values from Typesafe Config.
+Allows Guice to @Inject configuration values into your application derived from Typesafe Config.
 
 [![Build Status](https://travis-ci.org/racc/typesafeconfig-guice.svg?branch=master)](https://travis-ci.org/racc/typesafeconfig-guice)
 
-### Intro
 ```xml
 <dependency>
     <groupId>com.github.racc</groupId>
@@ -12,33 +11,35 @@ Allows @Inject of configuration values from Typesafe Config.
 </dependency>
 ```
 
+### Quickstart
 #### Step 1:
-Annotate configuration points with ```java @TypesafeConfig("config.path.key")
+Annotate configuration points with ```java @TypesafeConfig("config.path.key")```
 
 #### Step 2:
 Bootstrap your application with Guice and the TypesafeConfigModule.
-
+Configuration values annotated with @TypesafeConfig will be
+derived from your Typesafe Config file.
 ```java
 Config config = ConfigFactory.load("config.conf");
 Injector injector = Guice.createInjector(
 	TypesafeConfigModule.fromConfig(testConf)
 	// ... Add your other modules here
-	// Configuration values annotated with @TypesafeConfig will be derived from your Typesafe Config file.
 );
 ```
 
 #### Step 3:
 Profit!
 
+### Features
+
+
 AUTHOR
 -----------
-
 Jason Then (mailto:then.jason@gmail.com)
 
 
 LICENSE
 -----------
-
 Copyright 2015 Jason Then
 
 Licensed under the Apache License, Version 2.0 (the "License");
