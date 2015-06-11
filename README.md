@@ -1,5 +1,5 @@
 # typesafeconfig-guice
-Allows Guice to @Inject configuration values into your application derived from Typesafe Config.
+Allows [Guice](https://github.com/google/guice) to @Inject configuration values into your application derived from [Typesafe Config](https://github.com/typesafehub/config).
 
 [![Build Status](https://travis-ci.org/racc/typesafeconfig-guice.svg?branch=master)](https://travis-ci.org/racc/typesafeconfig-guice)
 
