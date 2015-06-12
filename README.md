@@ -32,9 +32,9 @@ Profit!
 
 ### Features
 - Plain Old Java Objects which follow JavaBean conventions (zero-args constructor, getters and setters) can be injected. 
-- Supports injection of `java.time.Duration` objects with config parameters defined as "10 seconds", "10 minutes" etc.
-- Type injections of `com.typesafe.config.ConfigMemorySize` can have matching configuration of "512k" or "2M"
-- `boolean` can be true, false, yes or no.
+- Supports injections of `java.time.Duration` objects with config parameters defined as "10 seconds", "10 minutes" etc.
+- Supports injections of `com.typesafe.config.ConfigMemorySize` objects with config parameters defined as "512k" or "2M".
+- Supports injections of `boolean`, where the matching config parameter can be "true", "false", yes or no.
 - Extensive test coverage
 
 AUTHOR
