@@ -3,6 +3,7 @@ package com.github.racc.tscg;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
+import java.time.Duration;
 import java.util.Set;
 
 import org.reflections.Reflections;
@@ -18,6 +19,7 @@ import com.google.inject.Key;
 import com.google.inject.Module;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigBeanFactory;
+import com.typesafe.config.ConfigMemorySize;
 import com.typesafe.config.ConfigValue;
 import com.typesafe.config.ConfigValueType;
 
@@ -62,20 +64,29 @@ public class TypesafeConfigModule extends AbstractModule {
 					Type type = p.getAnnotatedType().getType();
 					Key<Object> key = (Key<Object>) Key.get(type, annotation);
 					String configPath = annotation.value();
-					bind(key).toInstance(getConfigValue(type, configPath));
+					bind(key).toInstance(getConfigValue(p.getType(), configPath));
 				}
 			}
 		}
 	}
 	
-	private Object getConfigValue(Type type, String path) {
-		ConfigValue configValue = config.getValue(path);
-		if (configValue.valueType().equals(ConfigValueType.OBJECT)) {
-			try {
-				Object bean = ConfigBeanFactory.create(config.getConfig(path), Class.forName(type.getTypeName()));
+	private Object getConfigValue(Class<?> paramClass, String path) {
+		// Handle the special boolean case which allows "Yes" or "No"
+		if (paramClass.equals(Boolean.class) || paramClass.equals(boolean.class)) {
+			return config.getBoolean(path);
+		}
+		
+		if (!paramClass.isPrimitive()) {
+			if (paramClass.equals(Duration.class)) {
+				return config.getDuration(path);
+			} else if (paramClass.equals(ConfigMemorySize.class)) {
+				return config.getMemorySize(path);
+			}
+			
+			ConfigValue configValue = config.getValue(path);
+			if (configValue.valueType().equals(ConfigValueType.OBJECT)) {
+				Object bean = ConfigBeanFactory.create(config.getConfig(path), paramClass);
 				return bean;
-			} catch (ClassNotFoundException e) {
-				throw new RuntimeException(e);
 			}
 		}
 		
