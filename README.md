@@ -17,8 +17,7 @@ Annotate configuration injection points (Constructors, Providers, Fields) with `
 
 #### Step 2:
 Bootstrap your application with Guice and the TypesafeConfigModule.
-Configuration values annotated with @TypesafeConfig will be
-derived from your Typesafe Config file.
+Configuration values annotated with @TypesafeConfig will be scanned for on the classpath, and then bound from your supplied Typesafe Config file.
 ```java
 Config config = ConfigFactory.load("config.conf");
 Injector injector = Guice.createInjector(
