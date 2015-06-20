@@ -2,8 +2,10 @@ package com.github.racc.tscg;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.time.Duration;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.reflections.Reflections;
@@ -19,7 +21,6 @@ import com.google.inject.Key;
 import com.google.inject.Module;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigBeanFactory;
-import com.typesafe.config.ConfigMemorySize;
 import com.typesafe.config.ConfigValue;
 import com.typesafe.config.ConfigValueType;
 
@@ -61,35 +62,39 @@ public class TypesafeConfigModule extends AbstractModule {
 			for (Parameter p : params) {
 				if (p.isAnnotationPresent(TypesafeConfig.class)) {
 					TypesafeConfig annotation = p.getAnnotation(TypesafeConfig.class);
-					Type type = p.getAnnotatedType().getType();
-					Key<Object> key = (Key<Object>) Key.get(type, annotation);
+					Type paramType = p.getAnnotatedType().getType();
+					Key<Object> key = (Key<Object>) Key.get(paramType, annotation);
 					String configPath = annotation.value();
-					bind(key).toInstance(getConfigValue(p.getType(), configPath));
+					Class<?> paramClass = p.getType();
+					Object configValue = getConfigValue(paramClass, paramType, configPath);
+					bind(key).toInstance(configValue);
 				}
 			}
 		}
 	}
 	
-	private Object getConfigValue(Class<?> paramClass, String path) {
-		// Handle the special boolean case which allows "Yes" or "No"
-		if (paramClass.equals(Boolean.class) || paramClass.equals(boolean.class)) {
-			return config.getBoolean(path);
+	private Object getConfigValue(Class<?> paramClass, Type paramType, String path) {
+		Optional<Object> extractedValue = ConfigExtractors.extractConfigValue(config, paramClass, paramType, path);
+		if (extractedValue.isPresent()) {
+			return extractedValue.get();
 		}
-		
-		if (!paramClass.isPrimitive()) {
-			if (paramClass.equals(Duration.class)) {
-				return config.getDuration(path);
-			} else if (paramClass.equals(ConfigMemorySize.class)) {
-				return config.getMemorySize(path);
-			}
+
+		ConfigValue configValue = config.getValue(path);
+		ConfigValueType valueType = configValue.valueType();
+		if (valueType.equals(ConfigValueType.OBJECT)) {
+			Object bean = ConfigBeanFactory.create(config.getConfig(path), paramClass);
+			return bean;
+		} else if (valueType.equals(ConfigValueType.LIST) && List.class.isAssignableFrom(paramClass)) {
+			Type listType = ((ParameterizedType) paramType).getActualTypeArguments()[0];
 			
-			ConfigValue configValue = config.getValue(path);
-			if (configValue.valueType().equals(ConfigValueType.OBJECT)) {
-				Object bean = ConfigBeanFactory.create(config.getConfig(path), paramClass);
-				return bean;
+			Optional<List<?>> extractedListValue = 
+					ListExtractors.extractConfigListValue(config, listType, path);
+			
+			if (extractedListValue.isPresent()) {
+				return extractedListValue.get();
 			}
 		}
 		
-		return config.getAnyRef(path);
+		throw new RuntimeException("Cannot obtain config value for " + paramType + " at path: " + path);
 	}
 }
