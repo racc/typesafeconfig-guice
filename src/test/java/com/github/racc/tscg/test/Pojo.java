@@ -2,6 +2,7 @@ package com.github.racc.tscg.test;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
 import com.github.racc.tscg.TypesafeConfig;
 import com.google.inject.Inject;
@@ -26,8 +27,11 @@ public class Pojo {
 	private final List<String> testListOfString;
 	private final List<Duration> testListOfDuration;
 	private final List<ConfigMemorySize> testListOfSize;
+	private final List<NestedPojo> testListOfNested;
 	private final Duration testDuration;
 	private final ConfigMemorySize testSize;
+	private final Map<String, Integer> testMap;
+	private final Map<Integer, String> testMapIntkey;
 	private final NestedPojo testNestedPojo;
 	
 	@Inject
@@ -47,8 +51,11 @@ public class Pojo {
 		@TypesafeConfig("test.list.string") List<String> testListOfString,
 		@TypesafeConfig("test.list.duration") List<Duration> testListOfDuration,
 		@TypesafeConfig("test.list.size") List<ConfigMemorySize> testListOfSize,
+		@TypesafeConfig("test.list.nested") List<NestedPojo> testListOfNested,
 		@TypesafeConfig("test.duration") Duration testDuration,
 		@TypesafeConfig("test.size") ConfigMemorySize testSize,
+		@TypesafeConfig("test.map") Map<String, Integer> testMap,
+		@TypesafeConfig("test.map.intkey") Map<Integer, String> testMapIntkey,
 		@TypesafeConfig("test.nested") NestedPojo testNestedPojo
 	) {
 		this.testBoolean = testBoolean;
@@ -66,8 +73,11 @@ public class Pojo {
 		this.testListOfString = testListOfString;
 		this.testListOfDuration = testListOfDuration;
 		this.testListOfSize = testListOfSize;
+		this.testListOfNested = testListOfNested;
 		this.testDuration = testDuration;
 		this.testSize = testSize;
+		this.testMap = testMap;
+		this.testMapIntkey = testMapIntkey;
 		this.testNestedPojo = testNestedPojo;
 	}
 	
@@ -131,12 +141,24 @@ public class Pojo {
 		return testListOfSize;
 	}
 	
+	public List<NestedPojo> getTestListOfNested() {
+		return testListOfNested;
+	}
+	
 	public Duration getTestDuration() {
 		return testDuration;
 	}
 	
 	public ConfigMemorySize getTestSize() {
 		return testSize;
+	}
+	
+	public Map<String, Integer> getTestMap() {
+		return testMap;
+	}
+
+	public Map<Integer, String> getTestMapIntkey() {
+		return testMapIntkey;
 	}
 	
 	public NestedPojo getTestNestedPojo() {

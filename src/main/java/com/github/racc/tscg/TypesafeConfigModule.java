@@ -5,8 +5,10 @@ import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodParameterScanner;
@@ -21,6 +23,7 @@ import com.google.inject.Key;
 import com.google.inject.Module;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigBeanFactory;
+import com.typesafe.config.ConfigObject;
 import com.typesafe.config.ConfigValue;
 import com.typesafe.config.ConfigValueType;
 
@@ -81,17 +84,25 @@ public class TypesafeConfigModule extends AbstractModule {
 
 		ConfigValue configValue = config.getValue(path);
 		ConfigValueType valueType = configValue.valueType();
-		if (valueType.equals(ConfigValueType.OBJECT)) {
+		if (valueType.equals(ConfigValueType.OBJECT) && Map.class.isAssignableFrom(paramClass)) {
+			ConfigObject object = config.getObject(path);
+            return object.unwrapped();
+		} else if (valueType.equals(ConfigValueType.OBJECT)) {
 			Object bean = ConfigBeanFactory.create(config.getConfig(path), paramClass);
 			return bean;
 		} else if (valueType.equals(ConfigValueType.LIST) && List.class.isAssignableFrom(paramClass)) {
 			Type listType = ((ParameterizedType) paramType).getActualTypeArguments()[0];
 			
 			Optional<List<?>> extractedListValue = 
-					ListExtractors.extractConfigListValue(config, listType, path);
+				ListExtractors.extractConfigListValue(config, listType, path);
 			
 			if (extractedListValue.isPresent()) {
 				return extractedListValue.get();
+			} else {
+				List<? extends Config> configList = config.getConfigList(path);
+				return configList.stream()
+					.map(cfg -> ConfigBeanFactory.create(cfg, (Class<?>) listType))
+					.collect(Collectors.toList());
 			}
 		}
 		

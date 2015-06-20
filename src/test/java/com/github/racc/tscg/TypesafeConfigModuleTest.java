@@ -4,11 +4,13 @@ package com.github.racc.tscg;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.github.racc.tscg.test.NestedPojo;
 import com.github.racc.tscg.test.Pojo;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -51,6 +53,16 @@ public class TypesafeConfigModuleTest {
 		Assert.assertEquals("test", pojo.getTestString());
 		Assert.assertEquals(Duration.of(10, ChronoUnit.SECONDS), pojo.getTestDuration());
 		Assert.assertEquals(ConfigMemorySize.ofBytes(524288), pojo.getTestSize());
+		
+		NestedPojo nestedListPojo = pojo.getTestListOfNested().get(0);
+		Assert.assertEquals(3, nestedListPojo.getNestInt());
+		
+		Map<String, Integer> testMap = pojo.getTestMap();
+		Assert.assertEquals(1, testMap.get("one").intValue());
+
+		Map<Integer, String> testMapIntkey = pojo.getTestMapIntkey();
+		Assert.assertEquals("one", testMapIntkey.get("1"));
+		
 		Assert.assertEquals(Arrays.asList(true, false, true), pojo.getTestListOfBoolean());
 		Assert.assertEquals(Arrays.asList(1, 2, 3), pojo.getTestListOfInteger());
 		Assert.assertEquals(Arrays.asList(1.1, 2.2, 3.3), pojo.getTestListOfDouble());

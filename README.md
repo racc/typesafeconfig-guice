@@ -34,12 +34,15 @@ Profit!
 - Supports injections of `java.time.Duration` objects with config parameters defined as "10 seconds", "10 minutes" etc.
 - Supports injections of `com.typesafe.config.ConfigMemorySize` objects with config parameters defined as "512k" or "2M".
 - Supports injections of `boolean`, where the matching config parameter can be "true", "false", yes or no.
+- Supports injections of List types of primitives: `boolean`, `int`, `double`, `long`, `string`, `java.time.Duration`, `com.typesafe.config.ConfigMemorySize`
+- Supports injections of `java.util.Map<String, Object>`
+- Supports injections of POJO Lists.
 - Extensive test coverage
 
 AUTHOR
 -----------
 Jason Then (mailto:then.jason@gmail.com)
-
+Any comments and feedback appreciated!
 
 LICENSE
 -----------
