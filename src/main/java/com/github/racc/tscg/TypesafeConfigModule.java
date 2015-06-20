@@ -110,6 +110,7 @@ public class TypesafeConfigModule extends AbstractModule {
 		}
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private Object getConfigValue(Class<?> paramClass, Type paramType, String path) {
 		Optional<Object> extractedValue = ConfigExtractors.extractConfigValue(config, paramClass, path);
 		if (extractedValue.isPresent()) {
@@ -135,7 +136,7 @@ public class TypesafeConfigModule extends AbstractModule {
 			} else {
 				List<? extends Config> configList = config.getConfigList(path);
 				return configList.stream()
-					.map(cfg -> ConfigBeanFactory.create(cfg, (Class<?>) listType))
+					.map(cfg -> ConfigBeanFactory.create(cfg, (Class) listType))
 					.collect(Collectors.toList());
 			}
 		}
