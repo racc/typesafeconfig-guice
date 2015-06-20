@@ -74,7 +74,7 @@ public class TypesafeConfigModule extends AbstractModule {
 	}
 	
 	private Object getConfigValue(Class<?> paramClass, Type paramType, String path) {
-		Optional<Object> extractedValue = ConfigExtractors.extractConfigValue(config, paramClass, paramType, path);
+		Optional<Object> extractedValue = ConfigExtractors.extractConfigValue(config, paramClass, path);
 		if (extractedValue.isPresent()) {
 			return extractedValue.get();
 		}

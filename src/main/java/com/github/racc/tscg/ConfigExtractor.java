@@ -1,7 +1,5 @@
 package com.github.racc.tscg;
 
-import java.lang.reflect.Type;
-
 import com.typesafe.config.Config;
 
 /**
@@ -13,11 +11,10 @@ interface ConfigExtractor {
 	
 	/**
 	 * @param config the {@link Config} to extract from
-	 * @param paramType the {@link Type} of the matching parameter
 	 * @param path the {@link Config} path
 	 * @return the extracted value
 	 */
-	public Object extractValue(Config config, Type paramType, String path);
+	public Object extractValue(Config config, String path);
 	
 	/**
 	 * @return the types this {@link ConfigExtractor} will extract for.

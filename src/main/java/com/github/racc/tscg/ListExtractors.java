@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigMemorySize;
+import com.typesafe.config.ConfigObject;
 
 public enum ListExtractors implements ListExtractor {
 	BOOLEAN(Boolean.class) {
@@ -51,6 +52,30 @@ public enum ListExtractors implements ListExtractor {
 		@Override
 		public List<?> extractListValue(Config config, String path) {
 			return config.getMemorySizeList(path);
+		}
+	},
+	OBJECT(Object.class) {
+		@Override
+		public List<?> extractListValue(Config config, String path) {
+			return config.getAnyRefList(path);
+		}
+	},
+	CONFIG(Config.class) {
+		@Override
+		public List<?> extractListValue(Config config, String path) {
+			return config.getConfigList(path);
+		}
+	},
+	CONFIG_OBJECT(ConfigObject.class) {
+		@Override
+		public List<?> extractListValue(Config config, String path) {
+			return config.getObjectList(path);
+		}
+	},
+	CONFIG_VALUE(ConfigObject.class) {
+		@Override
+		public List<?> extractListValue(Config config, String path) {
+			return config.getList(path);
 		}
 	}
 	;
