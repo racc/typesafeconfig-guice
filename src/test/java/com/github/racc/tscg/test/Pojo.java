@@ -37,6 +37,7 @@ public class Pojo {
 	@Inject
 	public Pojo(
 		@TypesafeConfig("test.boolean") boolean testBoolean,	
+		@TypesafeConfig("test.boolean") boolean testBooleanAgain,	
 		@TypesafeConfig("test.yesBoolean") boolean testYesBoolean,	
 		@TypesafeConfig("test.long") long testLong,	
 		@TypesafeConfig("test.byte") byte testByte,	
