@@ -13,7 +13,7 @@ Allows [Guice](https://github.com/google/guice) to @Inject configuration values 
 
 ### Quickstart
 #### Step 1:
-Annotate configuration injection points (Constructors, Providers, Fields) with ```@TypesafeConfig("config.path.key")```
+Annotate configuration injection points (Constructors, Providers, Provider methods, Setter methods, Fields) with ```@TypesafeConfig("config.path.key")```
 
 #### Step 2:
 Bootstrap your application with Guice and the TypesafeConfigModule.
@@ -32,8 +32,8 @@ Profit!
 ### Features
 - Plain Old Java Objects which follow JavaBean conventions (zero-args constructor, getters and setters) can be injected. 
 - Supports injections of `java.time.Duration` objects with config parameters defined as "10 seconds", "10 minutes" etc.
-- Supports injections of `com.typesafe.config.ConfigMemorySize` objects with config parameters defined as "512k" or "2M".
-- Supports injections of `boolean`, where the matching config parameter can be "true", "false", yes or no.
+- Supports injections of `com.typesafe.config.ConfigMemorySize` objects with config parameters defined as "512k" or "2M" etc.
+- Supports injections of `boolean`, where the matching config parameter can be "true", "false", "yes" or "no".
 - Supports injections of List types of primitives: `boolean`, `int`, `double`, `long`, `string`, `java.time.Duration`, `com.typesafe.config.ConfigMemorySize`
 - Supports injections of `java.util.Map<String, Object>`
 - Supports injections of POJO Lists.
