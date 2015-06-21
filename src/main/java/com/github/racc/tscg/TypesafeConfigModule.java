@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -41,10 +42,12 @@ public class TypesafeConfigModule extends AbstractModule {
 
 	private final Config config;
 	private final Reflections reflections;
+	private final Set<TypesafeConfig> boundAnnotations;
 
 	private TypesafeConfigModule(Config config, Reflections reflections) {
 		this.config = config;
 		this.reflections = reflections;
+		this.boundAnnotations = new HashSet<TypesafeConfig>();
 	}
 	
 	public static TypesafeConfigModule fromConfig(Config config) {
@@ -85,13 +88,7 @@ public class TypesafeConfigModule extends AbstractModule {
 		Set<Field> annotatedFields = reflections.getFieldsAnnotatedWith(TypesafeConfig.class);
 		for (Field f : annotatedFields) {
 			TypesafeConfig annotation = f.getAnnotation(TypesafeConfig.class);
-			Type paramType = f.getAnnotatedType().getType();
-			@SuppressWarnings("unchecked")
-			Key<Object> key = (Key<Object>) Key.get(paramType, annotation);
-			String configPath = annotation.value();
-			Class<?> paramClass = f.getType();
-			Object configValue = getConfigValue(paramClass, paramType, configPath);
-			bind(key).toInstance(configValue);
+			bindValue(f.getType(), f.getAnnotatedType().getType(), annotation);
 		}
 	}
 
@@ -99,14 +96,20 @@ public class TypesafeConfigModule extends AbstractModule {
 		for (Parameter p : params) {
 			if (p.isAnnotationPresent(TypesafeConfig.class)) {
 				TypesafeConfig annotation = p.getAnnotation(TypesafeConfig.class);
-				Type paramType = p.getAnnotatedType().getType();
-				@SuppressWarnings("unchecked")
-				Key<Object> key = (Key<Object>) Key.get(paramType, annotation);
-				String configPath = annotation.value();
-				Class<?> paramClass = p.getType();
-				Object configValue = getConfigValue(paramClass, paramType, configPath);
-				bind(key).toInstance(configValue);
+				bindValue(p.getType(), p.getAnnotatedType().getType(), annotation);
 			}
+		}
+	}
+
+	private void bindValue(Class<?> paramClass, Type paramType, TypesafeConfig annotation) {
+		// Prevents multiple bindings on the same annotation
+		if (!boundAnnotations.contains(annotation)) {
+			@SuppressWarnings("unchecked")
+			Key<Object> key = (Key<Object>) Key.get(paramType, annotation);
+			String configPath = annotation.value();
+			Object configValue = getConfigValue(paramClass, paramType, configPath);
+			bind(key).toInstance(configValue);
+			boundAnnotations.add(annotation);
 		}
 	}
 	

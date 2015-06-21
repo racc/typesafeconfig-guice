@@ -4,13 +4,11 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
-import com.github.racc.tscg.TypesafeConfig;
-import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.typesafe.config.ConfigMemorySize;
 
 @Singleton
-public class Pojo {
+public class ProvidedPojo implements TestPojo {
 
 	private final boolean testBoolean;
 	private final boolean testYesBoolean;
@@ -34,30 +32,28 @@ public class Pojo {
 	private final Map<Integer, String> testMapIntkey;
 	private final NestedPojo testNestedPojo;
 	
-	@Inject
-	public Pojo(
-		@TypesafeConfig("test.boolean") boolean testBoolean,	
-		@TypesafeConfig("test.boolean") boolean testBooleanAgain,	
-		@TypesafeConfig("test.yesBoolean") boolean testYesBoolean,	
-		@TypesafeConfig("test.long") long testLong,	
-		@TypesafeConfig("test.byte") byte testByte,	
-		@TypesafeConfig("test.int") int testInt,	
-		@TypesafeConfig("test.double") double testDouble,
-		@TypesafeConfig("test.float") float testFloat,
-		@TypesafeConfig("test.string") String testString,
-		@TypesafeConfig("test.list.boolean") List<Boolean> testListOfBoolean,
-		@TypesafeConfig("test.list.integer") List<Integer> testListOfInteger,
-		@TypesafeConfig("test.list.double") List<Double> testListOfDouble,
-		@TypesafeConfig("test.list.long") List<Long> testListOfLong,
-		@TypesafeConfig("test.list.string") List<String> testListOfString,
-		@TypesafeConfig("test.list.duration") List<Duration> testListOfDuration,
-		@TypesafeConfig("test.list.size") List<ConfigMemorySize> testListOfSize,
-		@TypesafeConfig("test.list.nested") List<NestedPojo> testListOfNested,
-		@TypesafeConfig("test.duration") Duration testDuration,
-		@TypesafeConfig("test.size") ConfigMemorySize testSize,
-		@TypesafeConfig("test.map") Map<String, Integer> testMap,
-		@TypesafeConfig("test.map.intkey") Map<Integer, String> testMapIntkey,
-		@TypesafeConfig("test.nested") NestedPojo testNestedPojo
+	public ProvidedPojo(
+		boolean testBoolean,                                                         
+		boolean testYesBoolean,                                                      
+		long testLong,                                                               
+		byte testByte,                                                               
+		int testInt,                                                                 
+		double testDouble,                                                           
+		float testFloat,                                                             
+		String testString,                                                           
+		List<Boolean> testListOfBoolean,                                             
+		List<Integer> testListOfInteger,                                             
+		List<Double> testListOfDouble,                                               
+		List<Long> testListOfLong,                                                   
+		List<String> testListOfString,                                               
+		List<Duration> testListOfDuration,                                           
+		List<ConfigMemorySize> testListOfSize,                                       
+		List<NestedPojo> testListOfNested,                                           
+		Duration testDuration,                                                       
+		ConfigMemorySize testSize,                                                   
+		Map<String, Integer> testMap,                                                
+		Map<Integer, String> testMapIntkey,                                          
+		NestedPojo testNestedPojo                                  
 	) {
 		this.testBoolean = testBoolean;
 		this.testYesBoolean = testYesBoolean;
