@@ -3,7 +3,7 @@ Allows [Guice](https://github.com/google/guice) to @Inject configuration values 
 
 [![Build Status](https://travis-ci.org/racc/typesafeconfig-guice.svg?branch=master)](https://travis-ci.org/racc/typesafeconfig-guice)
 
-Available on Maven: [https://oss.sonatype.org/content/repositories/releases/](https://oss.sonatype.org/content/repositories/releases/com/github/racc/typesafeconfig-guice/).
+Available on [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22typesafeconfig-guice%22).
  
 ```xml
 <dependency>
