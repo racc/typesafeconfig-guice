@@ -12,27 +12,27 @@ import com.typesafe.config.ConfigMemorySize;
 @Singleton
 public class FieldInjectedPojo implements TestPojo {
 
-	@Inject @TypesafeConfig("test.boolean") 	  boolean testBoolean;
-	@Inject @TypesafeConfig("test.yesBoolean") 	  boolean testYesBoolean;
-	@Inject @TypesafeConfig("test.long") 		  long testLong;
-	@Inject @TypesafeConfig("test.byte") 		  byte testByte;
-	@Inject @TypesafeConfig("test.int") 		  int testInt;
-	@Inject @TypesafeConfig("test.double") 		  double testDouble;
-	@Inject @TypesafeConfig("test.float") 		  float testFloat;
-	@Inject @TypesafeConfig("test.string") 		  String testString;
-	@Inject @TypesafeConfig("test.list.boolean")  List<Boolean> testListOfBoolean;
-	@Inject @TypesafeConfig("test.list.integer")  List<Integer> testListOfInteger;
-	@Inject @TypesafeConfig("test.list.double")   List<Double> testListOfDouble;
-	@Inject @TypesafeConfig("test.list.long") 	  List<Long> testListOfLong;
-	@Inject @TypesafeConfig("test.list.string")   List<String> testListOfString;
-	@Inject @TypesafeConfig("test.list.duration") List<Duration> testListOfDuration;
-	@Inject @TypesafeConfig("test.list.size") 	  List<ConfigMemorySize> testListOfSize;
-	@Inject @TypesafeConfig("test.list.nested")   List<NestedPojo> testListOfNested;
-	@Inject @TypesafeConfig("test.duration") 	  Duration testDuration;
-	@Inject @TypesafeConfig("test.size") 		  ConfigMemorySize testSize;
-	@Inject @TypesafeConfig("test.map") 		  Map<String, Integer> testMap;
-	@Inject @TypesafeConfig("test.map.intkey") 	  Map<Integer, String> testMapIntkey;
-	@Inject @TypesafeConfig("test.nested") 		  NestedPojo testNestedPojo;
+	@Inject @TypesafeConfig("field.boolean") 	  boolean testBoolean;
+	@Inject @TypesafeConfig("field.yesBoolean") 	  boolean testYesBoolean;
+	@Inject @TypesafeConfig("field.long") 		  long testLong;
+	@Inject @TypesafeConfig("field.byte") 		  byte testByte;
+	@Inject @TypesafeConfig("field.int") 		  int testInt;
+	@Inject @TypesafeConfig("field.double") 		  double testDouble;
+	@Inject @TypesafeConfig("field.float") 		  float testFloat;
+	@Inject @TypesafeConfig("field.string") 		  String testString;
+	@Inject @TypesafeConfig("field.list.boolean")  List<Boolean> testListOfBoolean;
+	@Inject @TypesafeConfig("field.list.integer")  List<Integer> testListOfInteger;
+	@Inject @TypesafeConfig("field.list.double")   List<Double> testListOfDouble;
+	@Inject @TypesafeConfig("field.list.long") 	  List<Long> testListOfLong;
+	@Inject @TypesafeConfig("field.list.string")   List<String> testListOfString;
+	@Inject @TypesafeConfig("field.list.duration") List<Duration> testListOfDuration;
+	@Inject @TypesafeConfig("field.list.size") 	  List<ConfigMemorySize> testListOfSize;
+	@Inject @TypesafeConfig("field.list.nested")   List<NestedPojo> testListOfNested;
+	@Inject @TypesafeConfig("field.duration") 	  Duration testDuration;
+	@Inject @TypesafeConfig("field.size") 		  ConfigMemorySize testSize;
+	@Inject @TypesafeConfig("field.map") 		  Map<String, Integer> testMap;
+	@Inject @TypesafeConfig("field.map.intkey") 	  Map<Integer, String> testMapIntkey;
+	@Inject @TypesafeConfig("field.nested") 		  NestedPojo testNestedPojo;
 	
 	public void setTestBoolean(boolean testBoolean) {
 		this.testBoolean = testBoolean;
