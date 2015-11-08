@@ -79,7 +79,7 @@ public class TypesafeConfigModule extends AbstractModule {
 			bindParameters(params);
 		}
 		
-		Set<Method> annotatedMethods = reflections.getMethodsAnnotatedWith(TypesafeConfig.class);
+		Set<Method> annotatedMethods = reflections.getMethodsWithAnyParamAnnotated(TypesafeConfig.class);
 		for (Method m : annotatedMethods) {
 			Parameter[] params = m.getParameters();
 			bindParameters(params);
