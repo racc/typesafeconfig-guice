@@ -9,7 +9,7 @@ Available on [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22t
 <dependency>
     <groupId>com.github.racc</groupId>
     <artifactId>typesafeconfig-guice</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
 </dependency>
 ```
 
