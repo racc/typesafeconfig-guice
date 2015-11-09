@@ -45,27 +45,27 @@ public class TypesafeConfigModuleTest {
 			@Provides
 			@Singleton
 			ProvidedPojo providePojo( 
-				@TypesafeConfig("test.boolean") 	  boolean testBoolean,                  
-				@TypesafeConfig("test.yesBoolean") 	  boolean testYesBoolean,               
-				@TypesafeConfig("test.long") 		  long testLong,                        
-				@TypesafeConfig("test.byte") 		  byte testByte,                        
-				@TypesafeConfig("test.int") 		  int testInt,                          
-				@TypesafeConfig("test.double") 		  double testDouble,                    
-				@TypesafeConfig("test.float") 		  float testFloat,                      
-				@TypesafeConfig("test.string") 		  String testString,                    
-				@TypesafeConfig("test.list.boolean")  List<Boolean> testListOfBoolean,      
-				@TypesafeConfig("test.list.integer")  List<Integer> testListOfInteger,      
-				@TypesafeConfig("test.list.double")   List<Double> testListOfDouble,        
-				@TypesafeConfig("test.list.long") 	  List<Long> testListOfLong,            
-				@TypesafeConfig("test.list.string")   List<String> testListOfString,        
-				@TypesafeConfig("test.list.duration") List<Duration> testListOfDuration,    
-				@TypesafeConfig("test.list.size") 	  List<ConfigMemorySize> testListOfSize,
-				@TypesafeConfig("test.list.nested")   List<NestedPojo> testListOfNested,    
-				@TypesafeConfig("test.duration") 	  Duration testDuration,                
-				@TypesafeConfig("test.size") 		  ConfigMemorySize testSize,            
-				@TypesafeConfig("test.map") 		  Map<String, Integer> testMap,         
-				@TypesafeConfig("test.map.intkey") 	  Map<Integer, String> testMapIntkey,   
-				@TypesafeConfig("test.nested") 		  NestedPojo testNestedPojo             
+				@TypesafeConfig("provided.boolean") 	  boolean testBoolean,                  
+				@TypesafeConfig("provided.yesBoolean") 	  boolean testYesBoolean,               
+				@TypesafeConfig("provided.long") 		  long testLong,                        
+				@TypesafeConfig("provided.byte") 		  byte testByte,                        
+				@TypesafeConfig("provided.int") 		  int testInt,                          
+				@TypesafeConfig("provided.double") 		  double testDouble,                    
+				@TypesafeConfig("provided.float") 		  float testFloat,                      
+				@TypesafeConfig("provided.string") 		  String testString,                    
+				@TypesafeConfig("provided.list.boolean")  List<Boolean> testListOfBoolean,      
+				@TypesafeConfig("provided.list.integer")  List<Integer> testListOfInteger,      
+				@TypesafeConfig("provided.list.double")   List<Double> testListOfDouble,        
+				@TypesafeConfig("provided.list.long") 	  List<Long> testListOfLong,            
+				@TypesafeConfig("provided.list.string")   List<String> testListOfString,        
+				@TypesafeConfig("provided.list.duration") List<Duration> testListOfDuration,    
+				@TypesafeConfig("provided.list.size") 	  List<ConfigMemorySize> testListOfSize,
+				@TypesafeConfig("provided.list.nested")   List<NestedPojo> testListOfNested,    
+				@TypesafeConfig("provided.duration") 	  Duration testDuration,                
+				@TypesafeConfig("provided.size") 		  ConfigMemorySize testSize,            
+				@TypesafeConfig("provided.map") 		  Map<String, Integer> testMap,         
+				@TypesafeConfig("provided.map.intkey") 	  Map<Integer, String> testMapIntkey,   
+				@TypesafeConfig("provided.nested") 		  NestedPojo testNestedPojo             
 			) {
 				return new ProvidedPojo(testBoolean, testYesBoolean, testLong, testByte, testInt, testDouble, testFloat, testString, testListOfBoolean, testListOfInteger, testListOfDouble, testListOfLong, testListOfString, testListOfDuration, testListOfSize, testListOfNested, testDuration, testSize, testMap, testMapIntkey, testNestedPojo);
 			}

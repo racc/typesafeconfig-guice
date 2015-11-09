@@ -35,107 +35,107 @@ public class MethodInjectedPojo implements TestPojo {
 	private NestedPojo testNestedPojo;
 	
 	@Inject
-	public void setTestYesBoolean(@TypesafeConfig("test.boolean") boolean testYesBoolean) {
+	public void setTestYesBoolean(@TypesafeConfig("method.boolean") boolean testYesBoolean) {
 		this.testYesBoolean = testYesBoolean;
 	}
 
 	@Inject
-	public void setTestLong(@TypesafeConfig("test.long") long testLong) {
+	public void setTestLong(@TypesafeConfig("method.long") long testLong) {
 		this.testLong = testLong;
 	}
 
 	@Inject
-	public void setTestByte(@TypesafeConfig("test.byte") byte testByte) {
+	public void setTestByte(@TypesafeConfig("method.byte") byte testByte) {
 		this.testByte = testByte;
 	}
 
 	@Inject
-	public void setTestInt(@TypesafeConfig("test.int") int testInt) {
+	public void setTestInt(@TypesafeConfig("method.int") int testInt) {
 		this.testInt = testInt;
 	}
 
 	@Inject
-	public void setTestDouble(@TypesafeConfig("test.double") double testDouble) {
+	public void setTestDouble(@TypesafeConfig("method.double") double testDouble) {
 		this.testDouble = testDouble;
 	}
 
 	@Inject
-	public void setTestFloat(@TypesafeConfig("test.float") float testFloat) {
+	public void setTestFloat(@TypesafeConfig("method.float") float testFloat) {
 		this.testFloat = testFloat;
 	}
 
 	@Inject
-	public void setTestString(@TypesafeConfig("test.string") 	 String testString) {
+	public void setTestString(@TypesafeConfig("method.string") 	 String testString) {
 		this.testString = testString;
 	}
 	
 	@Inject
-	public void setTestListOfBoolean(@TypesafeConfig("test.list.boolean") List<Boolean> testListOfBoolean) {
+	public void setTestListOfBoolean(@TypesafeConfig("method.list.boolean") List<Boolean> testListOfBoolean) {
 		this.testListOfBoolean = testListOfBoolean;
 	}
 
 	@Inject
-	public void setTestListOfInteger(@TypesafeConfig("test.list.integer") List<Integer> testListOfInteger) {
+	public void setTestListOfInteger(@TypesafeConfig("method.list.integer") List<Integer> testListOfInteger) {
 		this.testListOfInteger = testListOfInteger;
 	}
 
 	@Inject
-	public void setTestListOfDouble(@TypesafeConfig("test.list.double") List<Double> testListOfDouble) {
+	public void setTestListOfDouble(@TypesafeConfig("method.list.double") List<Double> testListOfDouble) {
 		this.testListOfDouble = testListOfDouble;
 	}
 
 	@Inject
-	public void setTestListOfLong(@TypesafeConfig("test.list.long") List<Long> testListOfLong) {
+	public void setTestListOfLong(@TypesafeConfig("method.list.long") List<Long> testListOfLong) {
 		this.testListOfLong = testListOfLong;
 	}
 
 	@Inject
-	public void setTestListOfString(@TypesafeConfig("test.list.string") List<String> testListOfString) {
+	public void setTestListOfString(@TypesafeConfig("method.list.string") List<String> testListOfString) {
 		this.testListOfString = testListOfString;
 	}
 
 	@Inject
-	public void setTestListOfDuration(@TypesafeConfig("test.list.duration") List<Duration> testListOfDuration) {
+	public void setTestListOfDuration(@TypesafeConfig("method.list.duration") List<Duration> testListOfDuration) {
 		this.testListOfDuration = testListOfDuration;
 	}
 
 	@Inject
-	public void setTestListOfSize(@TypesafeConfig("test.list.size") List<ConfigMemorySize> testListOfSize) {
+	public void setTestListOfSize(@TypesafeConfig("method.list.size") List<ConfigMemorySize> testListOfSize) {
 		this.testListOfSize = testListOfSize;
 	}
 
 	@Inject
-	public void setTestListOfNested(@TypesafeConfig("test.list.nested") List<NestedPojo> testListOfNested) {
+	public void setTestListOfNested(@TypesafeConfig("method.list.nested") List<NestedPojo> testListOfNested) {
 		this.testListOfNested = testListOfNested;
 	}
 
 	@Inject
-	public void setTestDuration(@TypesafeConfig("test.duration") Duration testDuration) {
+	public void setTestDuration(@TypesafeConfig("method.duration") Duration testDuration) {
 		this.testDuration = testDuration;
 	}
 
 	@Inject
-	public void setTestSize(@TypesafeConfig("test.size") ConfigMemorySize testSize) {
+	public void setTestSize(@TypesafeConfig("method.size") ConfigMemorySize testSize) {
 		this.testSize = testSize;
 	}
 
 	@Inject
-	public void setTestMap(@TypesafeConfig("test.map") Map<String, Integer> testMap) {
+	public void setTestMap(@TypesafeConfig("method.map") Map<String, Integer> testMap) {
 		this.testMap = testMap;
 	}
 
 	@Inject
-	public void setTestMapIntkey(@TypesafeConfig("test.map.intkey") Map<Integer, String> testMapIntkey) {
+	public void setTestMapIntkey(@TypesafeConfig("method.map.intkey") Map<Integer, String> testMapIntkey) {
 		this.testMapIntkey = testMapIntkey;
 	}
 
 	@Inject
-	public void setTestNestedPojo(@TypesafeConfig("test.nested") NestedPojo testNestedPojo) {
+	public void setTestNestedPojo(@TypesafeConfig("method.nested") NestedPojo testNestedPojo) {
 		this.testNestedPojo = testNestedPojo;
 	}
 	
 	@Inject
-	public void setTestBoolean(@TypesafeConfig("test.yesBoolean") boolean testBoolean) {
+	public void setTestBoolean(@TypesafeConfig("method.yesBoolean") boolean testBoolean) {
 		this.testBoolean = testBoolean;
 	}
 	
