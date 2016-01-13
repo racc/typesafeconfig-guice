@@ -43,7 +43,7 @@ Profit!
 
 AUTHOR
 -----------
-Jason Then (mailto:then.jason@gmail.com)
+Jason Then 
 
 Any comments and feedback appreciated!
 
