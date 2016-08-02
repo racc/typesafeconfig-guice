@@ -72,7 +72,7 @@ public class TypesafeConfigModuleTest {
 		};
 		
 		injector = Guice.createInjector(
-			TypesafeConfigModule.fromConfig(testConf),
+			TypesafeConfigModule.fromConfigWithPackage(testConf, "com.github.racc"),
 			testModule
 		);
 	}

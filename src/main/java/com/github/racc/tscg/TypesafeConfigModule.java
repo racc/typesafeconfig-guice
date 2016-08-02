@@ -50,15 +50,32 @@ public class TypesafeConfigModule extends AbstractModule {
 		this.boundAnnotations = new HashSet<TypesafeConfig>();
 	}
 	
+	/**
+	 * Essentially calls fromConfigWithPackage with a package name of "" to construct a TypesafeConfigModule.
+	 * 
+	 * @param config the config to use.
+	 * @return The constructed TypesafeConfigModule.
+	 * @deprecated this is deprecated as there is a known issue with scanning the classpath for annotations
+	 * in this mode, when running a packaged jar file.
+	 * use {@link #fromConfigWithPackage(Config, String)} instead and limit the packages to scan.
+	 */
+	@Deprecated
 	public static TypesafeConfigModule fromConfig(Config config) {
 		return fromConfigWithPackage(config, "");
 	}
 	
-	public static TypesafeConfigModule fromConfigWithPackage(Config config, String packageName) {
+	/**
+	 * Scans the specified packages for annotated classes, and applies Config values to them.
+	 * 
+	 * @param config the Config to derive values from
+	 * @param packageNamePrefix the prefix to limit scanning to - e.g. "com.github"
+	 * @return The constructed TypesafeConfigModule.
+	 */
+	public static TypesafeConfigModule fromConfigWithPackage(Config config, String packageNamePrefix) {
 		 ConfigurationBuilder configBuilder = 
 			 new ConfigurationBuilder()
-	         .filterInputsBy(new FilterBuilder().includePackage(packageName))
-	         .setUrls(ClasspathHelper.forPackage(packageName))
+	         .filterInputsBy(new FilterBuilder().includePackage(packageNamePrefix))
+	         .setUrls(ClasspathHelper.forPackage(packageNamePrefix))
 	         .setScanners(
 	        	new TypeAnnotationsScanner(), 
 	        	new MethodParameterScanner(), 
@@ -139,7 +156,10 @@ public class TypesafeConfigModule extends AbstractModule {
 			} else {
 				List<? extends Config> configList = config.getConfigList(path);
 				return configList.stream()
-					.map(cfg -> ConfigBeanFactory.create(cfg, (Class) listType))
+					.map(cfg -> {
+						Object created = ConfigBeanFactory.create(cfg, (Class) listType);
+						return created;
+					})
 					.collect(Collectors.toList());
 			}
 		}

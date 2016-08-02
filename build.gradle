@@ -8,7 +8,7 @@ repositories {
 
 group = 'com.github.racc'
 archivesBaseName = "typesafeconfig-guice"
-version = '0.0.2'
+version = '0.0.3'
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
