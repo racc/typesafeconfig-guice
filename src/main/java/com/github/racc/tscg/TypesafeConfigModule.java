@@ -72,21 +72,28 @@ public class TypesafeConfigModule extends AbstractModule {
 	 * @return The constructed TypesafeConfigModule.
 	 */
 	public static TypesafeConfigModule fromConfigWithPackage(Config config, String packageNamePrefix) {
-		 ConfigurationBuilder configBuilder = 
-			 new ConfigurationBuilder()
-	         .filterInputsBy(new FilterBuilder().includePackage(packageNamePrefix))
-	         .setUrls(ClasspathHelper.forPackage(packageNamePrefix))
-	         .setScanners(
-	        	new TypeAnnotationsScanner(), 
-	        	new MethodParameterScanner(), 
-	        	new MethodAnnotationsScanner(), 
-	        	new FieldAnnotationsScanner()
-	         );
-		Reflections reflections = new Reflections(configBuilder);
-		
+		Reflections reflections = createPackageScanningReflections(packageNamePrefix);
+		return fromConfigWithReflections(config, reflections);
+	}
+
+	public static TypesafeConfigModule fromConfigWithReflections(Config config, Reflections reflections) {
 		return new TypesafeConfigModule(config, reflections);
 	}
-	
+
+	public static Reflections createPackageScanningReflections(String packageNamePrefix){
+		ConfigurationBuilder configBuilder =
+				new ConfigurationBuilder()
+						.filterInputsBy(new FilterBuilder().includePackage(packageNamePrefix))
+						.setUrls(ClasspathHelper.forPackage(packageNamePrefix))
+						.setScanners(
+								new TypeAnnotationsScanner(),
+								new MethodParameterScanner(),
+								new MethodAnnotationsScanner(),
+								new FieldAnnotationsScanner()
+						);
+		return new Reflections(configBuilder);
+	}
+
 	@SuppressWarnings({ "rawtypes"})
 	@Override
 	protected void configure() {
