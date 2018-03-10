@@ -13,6 +13,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.github.racc.tscg.reflectors.fastclasspathscanner.FastClasspathScanningReflector;
+import com.github.racc.tscg.reflectors.reflections.ReflectionsReflector;
+import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 import org.reflections.Reflections;
 import org.reflections.scanners.FieldAnnotationsScanner;
 import org.reflections.scanners.MethodAnnotationsScanner;
@@ -41,10 +44,10 @@ import com.typesafe.config.ConfigValueType;
 public class TypesafeConfigModule extends AbstractModule {
 
 	private final Config config;
-	private final Reflections reflections;
+	private final Reflector reflections;
 	private final Set<TypesafeConfig> boundAnnotations;
 
-	private TypesafeConfigModule(Config config, Reflections reflections) {
+	private TypesafeConfigModule(Config config, Reflector reflections) {
 		this.config = config;
 		this.reflections = reflections;
 		this.boundAnnotations = new HashSet<TypesafeConfig>();
@@ -84,7 +87,18 @@ public class TypesafeConfigModule extends AbstractModule {
 	         );
 		Reflections reflections = new Reflections(configBuilder);
 		
-		return new TypesafeConfigModule(config, reflections);
+		return new TypesafeConfigModule(config, new ReflectionsReflector(reflections));
+	}
+
+
+	/**
+	 * Scans the specified packages for annotated classes, and applies Config values to them.
+	 *
+	 * @param config the Config to derive values from
+	 * @return The constructed TypesafeConfigModule.
+	 */
+	public static TypesafeConfigModule fromConfigUsingClasspathScanner(Config config, String ...scannerSpec) {
+		return new TypesafeConfigModule(config, new FastClasspathScanningReflector(scannerSpec));
 	}
 	
 	@SuppressWarnings({ "rawtypes"})
