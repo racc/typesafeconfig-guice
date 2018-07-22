@@ -9,7 +9,7 @@ Available on [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22t
 <dependency>
     <groupId>com.github.racc</groupId>
     <artifactId>typesafeconfig-guice</artifactId>
-    <version>0.0.4</version>
+    <version>0.1.0</version>
 </dependency>
 ```
 
@@ -49,7 +49,7 @@ Any comments and feedback appreciated!
 
 LICENSE
 -----------
-Copyright 2015 Jason Then
+Copyright 2018 Jason Then
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
