@@ -75,21 +75,20 @@ public class TypesafeConfigModule extends AbstractModule {
 	 * @return The constructed TypesafeConfigModule.
 	 */
 	public static TypesafeConfigModule fromConfigWithPackage(Config config, String packageNamePrefix) {
-		 ConfigurationBuilder configBuilder = 
-			 new ConfigurationBuilder()
-	         .filterInputsBy(new FilterBuilder().includePackage(packageNamePrefix))
-	         .setUrls(ClasspathHelper.forPackage(packageNamePrefix))
-	         .setScanners(
-	        	new TypeAnnotationsScanner(), 
-	        	new MethodParameterScanner(), 
-	        	new MethodAnnotationsScanner(), 
-	        	new FieldAnnotationsScanner()
-	         );
-		Reflections reflections = new Reflections(configBuilder);
-		
-		return new TypesafeConfigModule(config, new ReflectionsReflector(reflections));
+		Reflections reflections = createPackageScanningReflections(packageNamePrefix);
+		return fromConfigWithReflections(config, reflections);
 	}
 
+   /**
+	 * Scans the specified packages for annotated classes, and applies Config values to them.
+   * 
+	 * @param config the Config to derive values from
+	 * @param reflections the reflections object to use
+	 * @return The constructed TypesafeConfigModule.
+	 */
+	public static TypesafeConfigModule fromConfigWithReflections(Config config, Reflections reflections) {
+		return new TypesafeConfigModule(config, new ReflectionsReflector(reflections));
+	}
 
 	/**
 	 * Scans the specified packages for annotated classes, and applies Config values to them.
@@ -100,7 +99,21 @@ public class TypesafeConfigModule extends AbstractModule {
 	public static TypesafeConfigModule fromConfigUsingClasspathScanner(Config config, String ...scannerSpec) {
 		return new TypesafeConfigModule(config, new FastClasspathScanningReflector(scannerSpec));
 	}
-	
+
+	public static Reflections createPackageScanningReflections(String packageNamePrefix){
+		ConfigurationBuilder configBuilder =
+				new ConfigurationBuilder()
+						.filterInputsBy(new FilterBuilder().includePackage(packageNamePrefix))
+						.setUrls(ClasspathHelper.forPackage(packageNamePrefix))
+						.setScanners(
+								new TypeAnnotationsScanner(),
+								new MethodParameterScanner(),
+								new MethodAnnotationsScanner(),
+								new FieldAnnotationsScanner()
+						);
+		return new Reflections(configBuilder);
+	}
+
 	@SuppressWarnings({ "rawtypes"})
 	@Override
 	protected void configure() {
