@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.google.inject.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,12 +18,6 @@ import com.github.racc.tscg.test.MethodInjectedPojo;
 import com.github.racc.tscg.test.NestedPojo;
 import com.github.racc.tscg.test.ProvidedPojo;
 import com.github.racc.tscg.test.TestPojo;
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Module;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigMemorySize;
@@ -99,6 +94,37 @@ public class TypesafeConfigModuleTest {
 	public void canGetProvidedPojo() {
 		ProvidedPojo pojo = injector.getInstance(ProvidedPojo.class);
 		assertPojoIsCorrect(pojo);
+	}
+
+	@Test
+	public void canGetFromInjector() {
+		Assert.assertTrue(injector.getInstance(Key.get(Boolean.class, TypesafeConfigs.forKeypath("provided.boolean"))));
+		Assert.assertTrue(injector.getInstance(Key.get(Boolean.class, TypesafeConfigs.forKeypath("provided.yesBoolean"))));
+		Assert.assertEquals(12345679123L, (long)injector.getInstance(Key.get(Long.class, TypesafeConfigs.forKeypath("provided.long"))));
+		Assert.assertEquals(1, (int)injector.getInstance(Key.get(Integer.class, TypesafeConfigs.forKeypath("provided.int"))));
+		Assert.assertEquals(123, (byte)injector.getInstance(Key.get(Byte.class, TypesafeConfigs.forKeypath("provided.byte"))));
+		Assert.assertEquals(2.0, (float)injector.getInstance(Key.get(Float.class, TypesafeConfigs.forKeypath("provided.float"))), 0.001);
+		Assert.assertEquals(2.0d, (double)injector.getInstance(Key.get(Double.class, TypesafeConfigs.forKeypath("provided.double"))), 0.001d);
+		Assert.assertEquals("test", injector.getInstance(Key.get(String.class, TypesafeConfigs.forKeypath("provided.string"))));
+		Assert.assertEquals(Duration.of(10, ChronoUnit.SECONDS), injector.getInstance(Key.get(Duration.class, TypesafeConfigs.forKeypath("provided.duration"))));
+		Assert.assertEquals(ConfigMemorySize.ofBytes(524288), injector.getInstance(Key.get(ConfigMemorySize.class, TypesafeConfigs.forKeypath("provided.size"))));
+
+		NestedPojo nestedListPojo = injector.getInstance(Key.get(new TypeLiteral<List<NestedPojo>>(){}, TypesafeConfigs.forKeypath("provided.list.nested"))).get(0);
+		Assert.assertEquals(3, nestedListPojo.getNestInt());
+
+		Map<String, Integer> testMap = injector.getInstance(Key.get(new TypeLiteral<Map<String, Integer>>(){}, TypesafeConfigs.forKeypath("provided.map")));
+		Assert.assertEquals(1, testMap.get("one").intValue());
+
+		Map<Integer, String> testMapIntkey = injector.getInstance(Key.get(new TypeLiteral<Map<Integer, String>>(){}, TypesafeConfigs.forKeypath("provided.map.intkey")));
+		Assert.assertEquals("one", testMapIntkey.get("1"));
+
+		Assert.assertEquals(Arrays.asList(true, false, true), injector.getInstance(Key.get(new TypeLiteral<List<Boolean>>(){}, TypesafeConfigs.forKeypath("provided.list.boolean"))));
+		Assert.assertEquals(Arrays.asList(1, 2, 3), injector.getInstance(Key.get(new TypeLiteral<List<Integer>>(){}, TypesafeConfigs.forKeypath("provided.list.integer"))));
+		Assert.assertEquals(Arrays.asList(1.1, 2.2, 3.3), injector.getInstance(Key.get(new TypeLiteral<List<Double>>(){}, TypesafeConfigs.forKeypath("provided.list.double"))));
+		Assert.assertEquals(Arrays.asList(12345679121L, 12345679122L, 12345679123L), injector.getInstance(Key.get(new TypeLiteral<List<Long>>(){}, TypesafeConfigs.forKeypath("provided.list.long"))));
+		Assert.assertEquals(Arrays.asList("a", "b", "c"), injector.getInstance(Key.get(new TypeLiteral<List<String>>(){}, TypesafeConfigs.forKeypath("provided.list.string"))));
+		Assert.assertEquals(Arrays.asList(Duration.of(1, ChronoUnit.SECONDS), Duration.of(2, ChronoUnit.SECONDS), Duration.of(3, ChronoUnit.SECONDS)), injector.getInstance(Key.get(new TypeLiteral<List<Duration>>(){}, TypesafeConfigs.forKeypath("provided.list.duration"))));
+		Assert.assertEquals(Arrays.asList(ConfigMemorySize.ofBytes(524288), ConfigMemorySize.ofBytes(1048576), ConfigMemorySize.ofBytes(1073741824)), injector.getInstance(Key.get(new TypeLiteral<List<ConfigMemorySize>>(){}, TypesafeConfigs.forKeypath("provided.list.size"))));
 	}
 
 	private void assertPojoIsCorrect(TestPojo pojo) {
