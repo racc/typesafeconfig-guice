@@ -4,6 +4,7 @@ package com.github.racc.tscg;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,11 +25,10 @@ import com.typesafe.config.ConfigMemorySize;
 
 public class TypesafeConfigModuleTest {
 
-	private Injector injector;
+	private List<Injector> injectors = new LinkedList<>();
 
-	@Before
-	public void setup() {
-		Config testConf = ConfigFactory.load("conf/test.conf");
+	private Module createTestModule() {
+
 		Module testModule = new AbstractModule() {
 			@Override
 			protected void configure() {
@@ -36,64 +36,83 @@ public class TypesafeConfigModuleTest {
 				bind(FieldInjectedPojo.class).asEagerSingleton();
 				bind(MethodInjectedPojo.class).asEagerSingleton();
 			}
-			
+
 			@Provides
 			@Singleton
-			ProvidedPojo providePojo( 
-				@TypesafeConfig("provided.boolean") 	  boolean testBoolean,                  
-				@TypesafeConfig("provided.yesBoolean") 	  boolean testYesBoolean,               
-				@TypesafeConfig("provided.long") 		  long testLong,                        
-				@TypesafeConfig("provided.byte") 		  byte testByte,                        
-				@TypesafeConfig("provided.int") 		  int testInt,                          
-				@TypesafeConfig("provided.double") 		  double testDouble,                    
-				@TypesafeConfig("provided.float") 		  float testFloat,                      
-				@TypesafeConfig("provided.string") 		  String testString,                    
-				@TypesafeConfig("provided.list.boolean")  List<Boolean> testListOfBoolean,      
-				@TypesafeConfig("provided.list.integer")  List<Integer> testListOfInteger,      
-				@TypesafeConfig("provided.list.double")   List<Double> testListOfDouble,        
-				@TypesafeConfig("provided.list.long") 	  List<Long> testListOfLong,            
-				@TypesafeConfig("provided.list.string")   List<String> testListOfString,        
-				@TypesafeConfig("provided.list.duration") List<Duration> testListOfDuration,    
-				@TypesafeConfig("provided.list.size") 	  List<ConfigMemorySize> testListOfSize,
-				@TypesafeConfig("provided.list.nested")   List<NestedPojo> testListOfNested,    
-				@TypesafeConfig("provided.duration") 	  Duration testDuration,                
-				@TypesafeConfig("provided.size") 		  ConfigMemorySize testSize,            
-				@TypesafeConfig("provided.map") 		  Map<String, Integer> testMap,         
-				@TypesafeConfig("provided.map.intkey") 	  Map<Integer, String> testMapIntkey,   
-				@TypesafeConfig("provided.nested") 		  NestedPojo testNestedPojo             
+			ProvidedPojo providePojo(
+					@TypesafeConfig("provided.boolean") 	  boolean testBoolean,
+					@TypesafeConfig("provided.yesBoolean") 	  boolean testYesBoolean,
+					@TypesafeConfig("provided.long") 		  long testLong,
+					@TypesafeConfig("provided.byte") 		  byte testByte,
+					@TypesafeConfig("provided.int") 		  int testInt,
+					@TypesafeConfig("provided.double") 		  double testDouble,
+					@TypesafeConfig("provided.float") 		  float testFloat,
+					@TypesafeConfig("provided.string") 		  String testString,
+					@TypesafeConfig("provided.list.boolean")  List<Boolean> testListOfBoolean,
+					@TypesafeConfig("provided.list.integer")  List<Integer> testListOfInteger,
+					@TypesafeConfig("provided.list.double")   List<Double> testListOfDouble,
+					@TypesafeConfig("provided.list.long") 	  List<Long> testListOfLong,
+					@TypesafeConfig("provided.list.string")   List<String> testListOfString,
+					@TypesafeConfig("provided.list.duration") List<Duration> testListOfDuration,
+					@TypesafeConfig("provided.list.size") 	  List<ConfigMemorySize> testListOfSize,
+					@TypesafeConfig("provided.list.nested")   List<NestedPojo> testListOfNested,
+					@TypesafeConfig("provided.duration") 	  Duration testDuration,
+					@TypesafeConfig("provided.size") 		  ConfigMemorySize testSize,
+					@TypesafeConfig("provided.map") 		  Map<String, Integer> testMap,
+					@TypesafeConfig("provided.map.intkey") 	  Map<Integer, String> testMapIntkey,
+					@TypesafeConfig("provided.nested") 		  NestedPojo testNestedPojo
 			) {
 				return new ProvidedPojo(testBoolean, testYesBoolean, testLong, testByte, testInt, testDouble, testFloat, testString, testListOfBoolean, testListOfInteger, testListOfDouble, testListOfLong, testListOfString, testListOfDuration, testListOfSize, testListOfNested, testDuration, testSize, testMap, testMapIntkey, testNestedPojo);
 			}
+
 		};
-		
-		injector = Guice.createInjector(
-			TypesafeConfigModule.fromConfigWithPackage(testConf, "com.github.racc"),
-			testModule
-		);
+		return testModule;
 	}
-	
+	@Before
+	public void setup() {
+		Config testConf = ConfigFactory.load("conf/test.conf");
+
+
+		injectors.add(Guice.createInjector(
+			TypesafeConfigModule.fromConfigWithPackage(testConf, "com.github.racc"),
+				createTestModule()
+		));
+		injectors.add(Guice.createInjector(
+				TypesafeConfigModule.fromConfigUsingClasspathScanner(testConf, "com.github.racc"),
+				createTestModule()
+		));
+	}
+
 	@Test
 	public void canInjectPojoViaConstructor() {
-		ConstructorInjectedPojo pojo = injector.getInstance(ConstructorInjectedPojo.class);
-		assertPojoIsCorrect(pojo);
+		for (Injector injector : injectors) {
+			ConstructorInjectedPojo pojo = injector.getInstance(ConstructorInjectedPojo.class);
+			assertPojoIsCorrect(pojo);
+		}
 	}
 
 	@Test
 	public void canInjectPojoViaFields() {
-		FieldInjectedPojo pojo = injector.getInstance(FieldInjectedPojo.class);
-		assertPojoIsCorrect(pojo);
+		for (Injector injector : injectors) {
+			FieldInjectedPojo pojo = injector.getInstance(FieldInjectedPojo.class);
+			assertPojoIsCorrect(pojo);
+		}
 	}
 
 	@Test
 	public void canInjectPojoViaMethods() {
-		MethodInjectedPojo pojo = injector.getInstance(MethodInjectedPojo.class);
-		assertPojoIsCorrect(pojo);
+		for (Injector injector : injectors) {
+			MethodInjectedPojo pojo = injector.getInstance(MethodInjectedPojo.class);
+			assertPojoIsCorrect(pojo);
+		}
 	}
 
 	@Test
 	public void canGetProvidedPojo() {
-		ProvidedPojo pojo = injector.getInstance(ProvidedPojo.class);
-		assertPojoIsCorrect(pojo);
+		for (Injector injector : injectors) {
+			ProvidedPojo pojo = injector.getInstance(ProvidedPojo.class);
+			assertPojoIsCorrect(pojo);
+		}
 	}
 
 	@Test
