@@ -28,7 +28,6 @@ signing {
     sign configurations.archives
 }
 
-//Todo: edit maven
 def uzer = hasProperty('ossrhUsername') ? ossrhUsername : System.getenv('ossrhUsername')
 def password = hasProperty('ossrhPassword') ? ossrhPassword : System.getenv('ossrhPassword')
 
