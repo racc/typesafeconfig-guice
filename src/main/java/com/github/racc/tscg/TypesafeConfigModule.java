@@ -80,6 +80,7 @@ public class TypesafeConfigModule extends AbstractModule {
      * Scans the specified packages for annotated classes, and applies Config values to them.
      *
      * @param config the Config to derive values from
+     * @param scannerSpec package specification for the scanner
      * @return The constructed TypesafeConfigModule.
      */
     public static TypesafeConfigModule fromConfigUsingClasspathScanner(Config config, String... scannerSpec) {

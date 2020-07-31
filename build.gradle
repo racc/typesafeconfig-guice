@@ -11,13 +11,11 @@ archivesBaseName = "typesafeconfig-guice"
 version = '0.2.0'
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
     from 'build/docs/javadoc'
 }
  
 task sourcesJar(type: Jar) {
     from sourceSets.main.allSource
-    classifier = 'sources'
 }
 
 artifacts {
@@ -71,10 +69,6 @@ uploadArchives {
                    developer {
                        id 'racc'
                        name 'Jason Then'
-                   }
-                   developer {
-                       id 'iamceph'
-                       name 'Frantisek Novosad'
                    }
                }
            }

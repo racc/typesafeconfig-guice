@@ -17,16 +17,19 @@ public class ReflectionsReflector implements Reflector {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Set<Constructor<?>> getConstructorsWithAnyParamAnnotated(Class clazz) {
         return delegate.getConstructorsWithAnyParamAnnotated(clazz);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Set<Method> getMethodsWithAnyParamAnnotated(Class clazz) {
         return delegate.getMethodsWithAnyParamAnnotated(clazz);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Set<Field> getFieldsAnnotatedWith(Class clazz) {
         return delegate.getFieldsAnnotatedWith(clazz);
     }
