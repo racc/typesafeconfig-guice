@@ -6,7 +6,9 @@ import java.lang.reflect.Method;
 import java.util.Set;
 
 public interface Reflector {
-    Set<Constructor> getConstructorsWithAnyParamAnnotated(Class<?> clazz);
+    Set<Constructor<?>> getConstructorsWithAnyParamAnnotated(Class<?> clazz);
+
     Set<Method> getMethodsWithAnyParamAnnotated(Class<?> clazz);
+
     Set<Field> getFieldsAnnotatedWith(Class<?> clazz);
 }

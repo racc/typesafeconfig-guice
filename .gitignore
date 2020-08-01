@@ -1,6 +1,26 @@
-/bin/
-/build/
-/.gradle/
-/.settings/
-/.classpath
-/.project
+# Gradle
+.gradle
+**/build/
+!src/**/build/
+gradle-app.setting
+gradle-wrapper.jar
+gradlew
+gradlew.bat
+.gradletasknamecache
+!src/**/target/
+**/target/
+
+# Eclipse
+/bin
+.settings
+.project
+.classpath
+
+# IntelliJ
+out/
+.idea/
+*.iml
+
+# Misc
+.DS_Store
+CraftBukkit/

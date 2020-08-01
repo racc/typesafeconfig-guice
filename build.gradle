@@ -3,26 +3,24 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 group = 'com.github.racc'
 archivesBaseName = "typesafeconfig-guice"
-version = '0.1.0'
+version = '0.2.0'
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
     from 'build/docs/javadoc'
 }
- 
+
 task sourcesJar(type: Jar) {
     from sourceSets.main.allSource
-    classifier = 'sources'
 }
 
 artifacts {
     archives jar
-	archives javadocJar
+    archives javadocJar
     archives sourcesJar
 }
 
@@ -37,51 +35,51 @@ uploadArchives {
     repositories {
         mavenDeployer {
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
- 
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-              	authentication(userName: uzer, password: password)
-            }
-            
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-        		authentication(userName: uzer, password: password)
-      		}
- 
-            pom.project {
-               name 'TypesafeConfigGuice'
-               packaging 'jar'
-               description 'TypesafeConfigGuice allows TypesafeConfig values to be injected with Guice'
-               url 'https://github.com/racc/typesafeconfig-guice'
 
-               scm {
-                   url 'scm:git@github.com:racc/typesafeconfig-guice.git'
-                   connection 'scm:git@github.com:racc/typesafeconfig-guice.git'
-                   developerConnection 'scm:git@github.com:racc/typesafeconfig-guice.git'
-               }
- 
-               licenses {
-                   license {
-                       name 'The Apache Software License, Version 2.0'
-                       url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                       distribution 'repo'
-                   }
-               }
- 
-               developers {
-                   developer {
-                       id 'racc'
-                       name 'Jason Then'
-                   }
-               }
-           }
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: uzer, password: password)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: uzer, password: password)
+            }
+
+            pom.project {
+                name 'TypesafeConfigGuice'
+                packaging 'jar'
+                description 'TypesafeConfigGuice allows TypesafeConfig values to be injected with Guice'
+                url 'https://github.com/racc/typesafeconfig-guice'
+
+                scm {
+                    url 'scm:git@github.com:racc/typesafeconfig-guice.git'
+                    connection 'scm:git@github.com:racc/typesafeconfig-guice.git'
+                    developerConnection 'scm:git@github.com:racc/typesafeconfig-guice.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'racc'
+                        name 'Jason Then'
+                    }
+                }
+            }
         }
     }
 }
 
 dependencies {
-	compile 'com.typesafe:config:1.3.0'
-    compile group: 'io.github.lukehutch', name: 'fast-classpath-scanner', version: '2.18.1'
-    compile 'org.reflections:reflections:0.9.9'
-	compile 'com.google.inject:guice:4.0:no_aop'
-	
-	testCompile 'junit:junit:4.12'
+    implementation group: 'com.typesafe', name: 'config', version: '1.4.0'
+    implementation group: 'io.github.classgraph', name: 'classgraph', version: '4.8.87'
+    implementation group: 'org.reflections', name: 'reflections', version: '0.9.12'
+    compileOnly group: 'com.google.inject', name: 'guice', version: '4.2.3'
+
+    testImplementation 'junit:junit:4.13'
 }
